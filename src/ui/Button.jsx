@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-
+//eslint-ignore
 const sizes = {
   small: css`
     font-size: 1.2rem;
@@ -47,3 +47,25 @@ const variations = {
     }
   `,
 };
+
+const Button = styled.button`
+  border: none;
+  border-radius: var(--border-radius-sm);
+
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  ${(props) => sizes[props.size || "medium"]}
+  ${(props) => variations[props.variation || "primary"]}
+    &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+`;
+
+Button.defaultProps = {
+  size: "medium",
+  variation: "primary",
+};
+
+export default Button;
