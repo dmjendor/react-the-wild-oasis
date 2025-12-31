@@ -1,31 +1,30 @@
 import styled from "styled-components";
-import { formatCurrency } from "../../utils/helpers";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabin, getCabins } from "../../services/apiCabins";
-import toast from "react-hot-toast";
-import { useState } from "react";
-import CreateCabinForm from "./CreateCabinForm";
-import { useDeleteCabin } from "./useDeleteCabin";
-import Button from "../../ui/Button";
 import {
   HiOutlineDocumentDuplicate,
   HiOutlinePencilSquare,
   HiOutlineTrash,
-  HiOutlineXMark,
 } from "react-icons/hi2";
+
+import { formatCurrency } from "../../utils/helpers";
+import { useDeleteCabin } from "./useDeleteCabin";
 import { useCreateCabin } from "./useCreateCabin";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import CreateCabinForm from "./CreateCabinForm";
+import Button from "../../ui/Button";
+import Modal from "../../ui/Modal";
+import Table from "../../ui/Table";
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
+// const TableRow = styled.div`
+//   display: grid;
+//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+//   column-gap: 2.4rem;
+//   align-items: center;
+//   padding: 1.4rem 2.4rem;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
+//   &:not(:last-child) {
+//     border-bottom: 1px solid var(--color-grey-100);
+//   }
+// `;
 
 const Img = styled.img`
   display: block;
@@ -59,7 +58,6 @@ const Dash = styled.span`
 `;
 
 function CabinRow({ cabin }) {
-  const [showForm, setShowForm] = useState(false);
   const {
     id: cabinId,
     name,
@@ -84,46 +82,62 @@ function CabinRow({ cabin }) {
     });
   }
   return (
-    <>
-      <TableRow role="row">
-        <div>
-          <img src={image} />
-        </div>
-        <Cabin>{name}</Cabin>
-        <div>Fits up to {maxCapacity} guests</div>
-        <Price>{formatCurrency(regularPrice)}</Price>
-        {discount > 0 ? (
-          <Discount>{formatCurrency(discount)}</Discount>
-        ) : (
-          <Dash>&mdash;</Dash>
-        )}
-        <div>
-          <Button
-            size="small"
-            onClick={() => setShowForm((show) => !show)}
-            disabled={isWorking}
-          >
-            <HiOutlinePencilSquare />
-          </Button>
-          <Button
-            size="small"
-            onClick={handleDuplicate}
-            disabled={isWorking}
-          >
-            <HiOutlineDocumentDuplicate />
-          </Button>
-          <Button
-            size="small"
-            variation="danger"
-            onClick={() => deleteCabin(cabinId)}
-            disabled={isWorking}
-          >
-            <HiOutlineTrash />
-          </Button>
-        </div>
-      </TableRow>
-      {showForm && <CreateCabinForm cabinToEdit={cabin} />}
-    </>
+    <Table.Row role="row">
+      <div>
+        <img src={image} />
+      </div>
+      <Cabin>{name}</Cabin>
+      <div>Fits up to {maxCapacity} guests</div>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      {discount > 0 ? (
+        <Discount>{formatCurrency(discount)}</Discount>
+      ) : (
+        <Dash>&mdash;</Dash>
+      )}
+      <div>
+        <Button
+          size="small"
+          onClick={handleDuplicate}
+          disabled={isWorking}
+        >
+          <HiOutlineDocumentDuplicate />
+        </Button>
+
+        <Modal>
+          <Modal.Open opens="edit">
+            <Button
+              size="small"
+              disabled={isWorking}
+            >
+              <HiOutlinePencilSquare />
+            </Button>
+          </Modal.Open>
+          <Modal.Window name="edit">
+            <CreateCabinForm cabinToEdit={cabin} />
+          </Modal.Window>
+
+          <Modal>
+            <Modal.Open opens="delete">
+              <Button
+                size="small"
+                variation="danger"
+                disabled={isWorking}
+              >
+                <HiOutlineTrash />
+              </Button>
+            </Modal.Open>
+            f
+            <Modal.Window name="delete">
+              <ConfirmDelete
+                resourceName="cabins"
+                disabled={isWorking}
+                onConfirm={() => deleteCabin(cabinId)}
+              />
+            </Modal.Window>
+          </Modal>
+        </Modal>
+      </div>
+    </Table.Row>
   );
 }
 
