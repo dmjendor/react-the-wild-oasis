@@ -1,12 +1,20 @@
 import styled, { css } from "styled-components";
 //eslint-ignore
 const sizes = {
+  xs: css`
+    font-size: 1.2rem;
+    padding: 0.2rem 0.4rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+  `,
   small: css`
     font-size: 1.2rem;
     padding: 0.4rem 0.8rem;
     text-transform: uppercase;
     font-weight: 600;
     text-align: center;
+    margin: 0.2rem;
   `,
   medium: css`
     font-size: 1.4rem;
