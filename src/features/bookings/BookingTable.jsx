@@ -1,9 +1,13 @@
 import BookingRow from "./BookingRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
+import Spinner from "../../ui/Spinner";
+import { useBookings } from "./useBookings";
+import { useSearchParams } from "react-router-dom";
 
 function BookingTable() {
-  const bookings = [];
+  const { isLoading, bookings } = useBookings();
+  if (isLoading) return <Spinner />;
 
   return (
     <Menus>
@@ -20,7 +24,10 @@ function BookingTable() {
         <Table.Body
           data={bookings}
           render={(booking) => (
-            <BookingRow key={booking.id} booking={booking} />
+            <BookingRow
+              key={booking.id}
+              booking={booking}
+            />
           )}
         />
       </Table>

@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
-import { useCabins } from "../features/cabins/useCabins";
-
+import Uploader from "../data/Uploader";
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-0);
   padding: 3.2rem 2rrem;
@@ -16,6 +15,7 @@ function Sidebar() {
     <StyledSidebar>
       <Logo />
       <MainNav />
+      <Uploader />
     </StyledSidebar>
   );
 }

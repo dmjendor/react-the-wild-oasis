@@ -96,31 +96,36 @@ function CabinRow({ cabin }) {
         <Dash>&mdash;</Dash>
       )}
       <div>
+        <Button
+          size="small"
+          disabled={isWorking}
+        >
+          <HiOutlineDocumentDuplicate />
+        </Button>
+
         <Modal>
-          <Menus.Menu>
-            <Menus.Toggle id={cabinId} />
+          <Modal.Open opens="edit">
+            <Button
+              size="small"
+              disabled={isWorking}
+            >
+              <HiOutlinePencilSquare />
+            </Button>
+          </Modal.Open>
+          <Modal.Window name="edit">
+            <CreateCabinForm cabinToEdit={cabin} />
+          </Modal.Window>
 
-            <Menus.List id={cabinId}>
-              <Modal.Open opens="edit">
-                <Menus.Button icon={<HiOutlinePencilSquare />}>
-                  Edit
-                </Menus.Button>
-              </Modal.Open>
-
-              <Menus.Button
-                icon={<HiOutlineDocumentDuplicate />}
-                onClick={handleDuplicate}
+          <Modal>
+            <Modal.Open opens="delete">
+              <Button
+                size="small"
+                variation="danger"
+                disabled={isWorking}
               >
-                Copy
-              </Menus.Button>
-              <Modal.Open opens="delete">
-                <Menus.Button icon={<HiOutlineTrash />}>Delete</Menus.Button>
-              </Modal.Open>
-            </Menus.List>
-
-            <Modal.Window name="edit">
-              <CreateCabinForm cabinToEdit={cabin} />
-            </Modal.Window>
+                <HiOutlineTrash />
+              </Button>
+            </Modal.Open>
 
             <Modal.Window name="delete">
               <ConfirmDelete
@@ -129,7 +134,7 @@ function CabinRow({ cabin }) {
                 onConfirm={() => deleteCabin(cabinId)}
               />
             </Modal.Window>
-          </Menus.Menu>
+          </Modal>
         </Modal>
       </div>
     </Table.Row>
