@@ -1,13 +1,18 @@
 import BookingRow from "./BookingRow";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
-import Spinner from "../../ui/Spinner";
+import Empty from "../../ui/Empty";
+
 import { useBookings } from "./useBookings";
-import { useSearchParams } from "react-router-dom";
+import Spinner from "../../ui/Spinner";
+import Pagination from "../../ui/Pagination";
 
 function BookingTable() {
-  const { isLoading, bookings } = useBookings();
+  const { bookings, isLoading, count } = useBookings();
+
   if (isLoading) return <Spinner />;
+
+  if (!bookings.length) return <Empty resourceName="bookings" />;
 
   return (
     <Menus>
@@ -30,6 +35,10 @@ function BookingTable() {
             />
           )}
         />
+
+        <Table.Footer>
+          <Pagination count={count} />
+        </Table.Footer>
       </Table>
     </Menus>
   );
