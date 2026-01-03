@@ -16,7 +16,7 @@ import {
   HiTrash,
 } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
-import { useCheckout } from "../check-in-out/useCheckout";
+import { useCheckout } from "../check-in-out/useCheckOut";
 import { useDeleteBooking } from "./useDeleteBooking";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 
